@@ -40,7 +40,7 @@ Use Keycloak Operator to create Keycloak instance pointed to this DB:
   > kubectl apply -f keycloak-nodeport.yaml
 
 ### Link access:
-http://34.225.67.85:30080/
+> http://34.225.67.85:30080/
 
 ### Get user/pw:
   > kubectl -n keycloak get secret keycloak-initial-admin -o jsonpath='{.data.username}' | base64 --decode; echo
