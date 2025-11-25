@@ -1,6 +1,6 @@
 # Create local storage for postgres data
-  mkdir -p /home/ec2-user/data/postgres-keycloak
-  chown 999:999 data/postgres-keycloak/
+  > mkdir -p /home/ec2-user/data/postgres-keycloak
+  > chown 999:999 data/postgres-keycloak/
 # File yaml: postgres-keycloak.yaml, postgres-pv-pvc.yaml, keycloak-nodeport.yaml, keycloak-instance.yaml
 
 # setup manual without OLM keycloak operator:
