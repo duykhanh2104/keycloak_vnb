@@ -5,14 +5,14 @@ curl -sfL https://get.k3s.io | sh -
 - binary: /usr/local/bin/k3s
 
 #### setup kube config:
-> mkdir -p ~/.kube
-> sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
-> sudo chown $(id -u):$(id -g) ~/.kube/config
-> chmod 600 ~/.kube/config
-> export KUBECONFIG=$HOME/.kube/config
-> kubectl get nodes -o wide
-> kubectl get pods -A
-> kubectl get pods --all-namespaces
+> mkdir -p ~/.kube <br>
+> sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config <br>
+> sudo chown $(id -u):$(id -g) ~/.kube/config <br>
+> chmod 600 ~/.kube/config <br>
+> export KUBECONFIG=$HOME/.kube/config <br>
+> kubectl get nodes -o wide <br>
+> kubectl get pods -A <br>
+> kubectl get pods --all-namespaces <br>
 
 ### 2. Setup Keycloak Operator
 ### Create local storage for postgres data
