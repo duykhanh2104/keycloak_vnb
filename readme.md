@@ -1,4 +1,4 @@
-### Setup K3s:
+### 1. Setup K3s:
 curl -sfL https://get.k3s.io | sh -
 #### After K3s setup done will have:
 - kubeconfig: /etc/rancher/k3s/k3s.yaml <br>
@@ -14,6 +14,7 @@ curl -sfL https://get.k3s.io | sh -
 > kubectl get pods -A
 > kubectl get pods --all-namespaces
 
+### 2. Setup Keycloak Operator
 ### Create local storage for postgres data
   > mkdir -p /home/ec2-user/data/postgres-keycloak <br>
   > chown 999:999 data/postgres-keycloak/
