@@ -23,7 +23,7 @@ spec:
     httpPort: 8080
 
   hostname:
-    hostname: ""          # POC, không strict hostname
+    hostname: ""          # POC, no strict hostname
     strict: false
     strictBackchannel: false
 
