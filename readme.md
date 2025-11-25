@@ -10,21 +10,23 @@
 ### setup CRD: 
 Install the CRDs by entering the following commands following <https://www.keycloak.org/operator/installation> 
 
-  > kubectl apply -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/26.4.5/kubernetes/keycloaks.k8s.keycloak.org-v1.yml
-  >   #can use: kubectl apply -f file crd.yaml
-  > kubectl apply -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/26.4.5/kubernetes/keycloakrealmimports.k8s.keycloak.org-v1.yml  # can use kubectl apply -f crdimport.yaml
+  > kubectl apply -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/26.4.5/kubernetes/keycloaks.k8s.keycloak.org-v1.yml <br>
+  > #### can use: kubectl apply -f file crd.yaml
+  > kubectl apply -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/26.4.5/kubernetes/keycloakrealmimports.k8s.keycloak.org-v1.yml  <br>
+  > #### can use kubectl apply -f crdimport.yaml
 
 ### deployment keycloak operator to namespace
-  kubectl apply -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/26.4.5/kubernetes/kubernetes.yml # can kubectl apply -f keycloak-operator.yaml
+  > kubectl apply -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/26.4.5/kubernetes/kubernetes.yml
+  > #### can kubectl apply -f keycloak-operator.yaml
 
 ### create PV to mapping local host path
-  kubectl apply -f postgres-pv-pvc.yaml
+  > kubectl apply -f postgres-pv-pvc.yaml
 
-### create db
-  kubectl apply -f postgres-keycloak.yaml
+### create db postgres
+  > kubectl apply -f postgres-keycloak.yaml
 
 ### create keycloak instance
-  kubectl apply -f keycloak-instance.yaml
+  > kubectl apply -f keycloak-instance.yaml
 
 
 Use Keycloak Operator to create Keycloak instance pointed to this DB:
@@ -34,13 +36,13 @@ Use Keycloak Operator to create Keycloak instance pointed to this DB:
 • User/pass: keycloak/password
 
 ### Use nodeport or ingress to public page keycloak admin page:
-  kubectl apply -f keycloak-nodeport.yaml
+  > kubectl apply -f keycloak-nodeport.yaml
 
 ### Link access:
 http://34.225.67.85:30080/
 
 ### Get user/pw:
-  kubectl -n keycloak get secret keycloak-initial-admin -o jsonpath='{.data.username}' | base64 --decode; echo
+  > kubectl -n keycloak get secret keycloak-initial-admin -o jsonpath='{.data.username}' | base64 --decode; echo
 ### Get password:
-  kubectl -n keycloak get secret keycloak-initial-admin   -o jsonpath='{.data.password}' | base64 --decode; echo
+  > kubectl -n keycloak get secret keycloak-initial-admin   -o jsonpath='{.data.password}' | base64 --decode; echo
 
