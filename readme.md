@@ -21,8 +21,8 @@ curl -sfL https://get.k3s.io | sh -
 ### File yaml: postgres-keycloak.yaml, postgres-pv-pvc.yaml, keycloak-nodeport.yaml, keycloak-instance.yaml
 
 ### setup manual without OLM keycloak operator:
-  > kubectl create namespace keycloak <br>
-  > kubectl config set-context --current --namespace keycloak
+  > #### kubectl create namespace keycloak <br>
+  > #### kubectl config set-context --current --namespace keycloak
 
 ### setup CRD: 
 Install the CRDs by following commands <https://www.keycloak.org/operator/installation> 
@@ -38,13 +38,13 @@ Install the CRDs by following commands <https://www.keycloak.org/operator/instal
   > #### kubectl apply -f keycloak-operator.yaml
 
 ### create PV to mapping local host path
-  > kubectl apply -f postgres-pv-pvc.yaml
+  > #### kubectl apply -f postgres-pv-pvc.yaml
 
 ### create db postgres
-  > kubectl apply -f postgres-keycloak.yaml
+  > #### kubectl apply -f postgres-keycloak.yaml
 
 ### create keycloak instance
-  > kubectl apply -f keycloak-instance.yaml
+  > #### kubectl apply -f keycloak-instance.yaml
 
 Use Keycloak Operator to create Keycloak instance pointed to this DB:<br>
 • Namespace: keycloak <br>
