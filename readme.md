@@ -8,7 +8,7 @@
   > kubectl config set-context --current --namespace keycloak
 
 ### setup CRD: 
-Install the CRDs by entering the following commands following <https://www.keycloak.org/operator/installation> 
+Install the CRDs by following commands <https://www.keycloak.org/operator/installation> 
 
   > kubectl apply -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/26.4.5/kubernetes/keycloaks.k8s.keycloak.org-v1.yml <br>
   > #### can use: kubectl apply -f file crd.yaml <br>
