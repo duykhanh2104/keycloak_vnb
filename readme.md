@@ -29,12 +29,11 @@ Install the CRDs by following commands <https://www.keycloak.org/operator/instal
 ### create keycloak instance
   > kubectl apply -f keycloak-instance.yaml
 
-
-Use Keycloak Operator to create Keycloak instance pointed to this DB:
-• Namespace: keycloak
-• Postgres service: postgres-db.keycloak.svc.cluster.local:5432
-• DB: keycloak
-• User/pass: keycloak/password
+Use Keycloak Operator to create Keycloak instance pointed to this DB:<br>
+• Namespace: keycloak <br>
+• Postgres service: postgres-db.keycloak.svc.cluster.local:5432 <br>
+• DB: keycloak <br>
+• User/pass: keycloak/password <br>
 
 ### Use nodeport or ingress to public page keycloak admin page:
   > kubectl apply -f keycloak-nodeport.yaml
