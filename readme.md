@@ -10,11 +10,11 @@
 # setup CRD: 
 Install the CRDs by entering the following commands following <https://www.keycloak.org/operator/installation> 
 
-  kubectl apply -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/26.4.5/kubernetes/keycloaks.k8s.keycloak.org-v1.yml
-  kubectl apply -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/26.4.5/kubernetes/keycloakrealmimports.k8s.keycloak.org-v1.yml 
+  kubectl apply -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/26.4.5/kubernetes/keycloaks.k8s.keycloak.org-v1.yml     #can kubectl apply -f file crd.yaml
+  kubectl apply -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/26.4.5/kubernetes/keycloakrealmimports.k8s.keycloak.org-v1.yml  # can kubectl apply -f crdimport.yaml
 
 # deployment keycloak operator to namespace
-  kubectl apply -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/26.4.5/kubernetes/kubernetes.yml
+  kubectl apply -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/26.4.5/kubernetes/kubernetes.yml # can kubectl apply -f keycloak-operator.yaml
 
 # create PV to mapping local host path
   kubectl apply -f postgres-pv-pvc.yaml
