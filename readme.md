@@ -11,7 +11,8 @@
 Install the CRDs by entering the following commands following <https://www.keycloak.org/operator/installation> 
 
   > kubectl apply -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/26.4.5/kubernetes/keycloaks.k8s.keycloak.org-v1.yml <br>
-  > #### can use: kubectl apply -f file crd.yaml
+  > #### can use: kubectl apply -f file crd.yaml <br>
+  
   > kubectl apply -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/26.4.5/kubernetes/keycloakrealmimports.k8s.keycloak.org-v1.yml  <br>
   > #### can use kubectl apply -f crdimport.yaml
 
