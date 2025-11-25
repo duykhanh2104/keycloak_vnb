@@ -1,3 +1,19 @@
+### Setup K3s:
+curl -sfL https://get.k3s.io | sh -
+#### After K3s setup done will have:
+- kubeconfig: /etc/rancher/k3s/k3s.yaml <br>
+- binary: /usr/local/bin/k3s
+
+#### setup kube config:
+> mkdir -p ~/.kube
+> sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+> sudo chown $(id -u):$(id -g) ~/.kube/config
+> chmod 600 ~/.kube/config
+> export KUBECONFIG=$HOME/.kube/config
+> kubectl get nodes -o wide
+> kubectl get pods -A
+> kubectl get pods --all-namespaces
+
 ### Create local storage for postgres data
   > mkdir -p /home/ec2-user/data/postgres-keycloak <br>
   > chown 999:999 data/postgres-keycloak/
