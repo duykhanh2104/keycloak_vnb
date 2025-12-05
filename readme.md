@@ -19,7 +19,8 @@ curl -sfL https://get.k3s.io | sh -
   > mkdir -p /home/ec2-user/data/postgres-keycloak <br>
   > chown 999:999 data/postgres-keycloak/
 ### File yaml: postgres-keycloak.yaml, postgres-pv-pvc.yaml, keycloak-nodeport.yaml, keycloak-instance.yaml
-
+### Download images from https://quay.io/repository/keycloak/keycloak-operator?tab=tags: 
+  > docker-operator: docker pull quay.io/keycloak/keycloak-operator:26.4.6
 ### setup manual without OLM keycloak operator:
   > #### kubectl create namespace keycloak <br>
   > #### kubectl config set-context --current --namespace keycloak
@@ -57,6 +58,7 @@ Use Keycloak Operator to create Keycloak instance pointed to this DB:<br>
 
 ### Link access:
 > http://34.225.67.85:30080/
+
 
 ### Get user/pw:
   > kubectl -n keycloak get secret keycloak-initial-admin -o jsonpath='{.data.username}' | base64 --decode; echo
