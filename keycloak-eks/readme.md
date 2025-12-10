@@ -297,7 +297,9 @@ https://k8s-keycloak-keycloak-***************************.us-east-1.elb.amazonaw
 
 kubectl -n keycloak get secret keycloak-initial-admin -o jsonpath='{.data.username}' | base64 -d; echo
 kubectl -n keycloak get secret keycloak-initial-admin -o jsonpath='{.data.password}' | base64 -d; echo
-<img width="2070" height="2551" alt="image" src="https://github.com/user-attachments/assets/ba9cf867-75f6-4f6d-aa33-f24da265940b" />
-
 
 #### Keycloak setup
+Apply namespace
+Apply CRD for keycloak
+Apply from 1 - 7 yaml file
+
