@@ -228,41 +228,7 @@ NAME               CLASS   HOSTS              ADDRESS                           
 keycloak-ingress   alb     auth.keycloak.me   k8s-keycloak-keycloak-*********************.us-east-1.elb.amazonaws.com   80      3m21s<br>
 
 >kubectl -n keycloak exec -it keycloak-0 -c keycloak -- /opt/keycloak/bin/kc.sh show-config
-Current Mode: production<br>
-Current Configuration:<br>
-        kc.health-enabled =  true (ENV)<br>
-        kc.bootstrap-admin-password =  ******* (ENV)<br>
-        kc.db-username =  keycloakadminsql (ENV)<br>
-        kc.db-url-database =  keycloakdb (ENV)<br>
-        kc.spi-cache-embedded-default-machine-name =  ip-192-168-4-205.ec2.internal (ENV)<br>
-        kc.log-level-org.infinispan.transaction.lookup.JBossStandaloneJTAManagerLookup =  null (Derived)<br>
-        kc.log-level-io.quarkus.config =  null (Derived)<br>
-        kc.hostname =  auth.keycloak.me (ENV)<br>
-        kc.log-console-output =  default (classpath application.properties)<br>
-        kc.https-port =  8443 (ENV)<br>
-        kc.spi-hostname-default-ssl-required =  NONE (ENV)<br>
-        kc.bootstrap-admin-username =  temp-admin (ENV)<br>
-        kc.log-level-io.quarkus.hibernate.orm.deployment.HibernateOrmProcessor =  null (Derived)<br>
-        kc.db =  postgres (ENV)<br>
-        kc.log-level-liquibase.database.core.PostgresDatabase =  null (Derived)<br>
-        kc.version =  26.4.5 (SysPropConfigSource)<br>
-        kc.truststore-paths =  /var/run/secrets/kubernetes.io/serviceaccount/ca.crt (ENV)<br>
-        kc.log-level-org.jboss.resteasy.resteasy_jaxrs.i18n =  null (Derived)<br>
-        kc.log-level-io.quarkus.arc.processor.BeanArchives =  null (Derived)<br>
-        kc.cache =  ispn (ENV)<br>
-        kc.db-url-host =  postgres-db (ENV)<br>
-        kc.log-level-io.quarkus.deployment.steps.ReflectiveHierarchyStep =  null (Derived)<br>
-        kc.db-password =  ******* (ENV)<br>
-        kc.http-port =  8080 (ENV)<br>
-        kc.proxy-headers-forwarded =  xforwarded (ENV)<br>
-        kc.http-enabled =  true (ENV)<br>
-        kc.log-level-org.hibernate.SQL_SLOW =  null (Derived)<br>
-        kc.hostname-strict-backchannel =  false (ENV)<br>
-        kc.log-level-io.quarkus.arc.processor.IndexClassLookupUtils =  null (Derived)<br>
-        kc.db-url-port =  5432 (ENV)<br>
-        kc.hostname-strict =  false (ENV)<br>
-        kc.log-level-org.hibernate.engine.jdbc.spi.SqlExceptionHelper =  null (Derived)<br>
-        kc.run-in-container =  true (ENV)<br>
+
 >kubectl -n keycloak logs keycloak-0 -c keycloak --tail=300 --follow
 >kubectl -n keycloak get ingress --> lay thong tin ELB cua AWS
 
