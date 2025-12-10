@@ -1,0 +1,97 @@
+apiVersion: k8s.keycloak.org/v2alpha1
+kind: Keycloak
+metadata:
+  name: keycloak
+  namespace: keycloak
+  labels:
+    app: keycloak
+spec:
+  instances: 1
+  db:
+    vendor: postgres
+    host: postgres-db
+    port: 5432
+    database: keycloakdb
+    usernameSecret:
+      name: keycloak-db-secret
+      key: db-username
+    passwordSecret:
+      name: keycloak-db-secret
+      key: db-password
+
+  http:
+    httpEnabled: true
+    httpPort: 8080
+    #httpsEnabled: false           # disable pod TLS; ALB terminates HTTPS; khong co tham so nay
+    # tlsSecret: keycloak-tls-secret
+
+  proxy:
+    headers: xforwarded           # proper proxy headers behind ALB
+
+  hostname:
+    hostname: auth.keycloak.me
+    strict: false
+    strictBackchannel: false
+
+  additionalOptions:
+    - name: spi-hostname-default-ssl-required
+      value: "NONE"
+    # remove legacy proxy option:
+    # - name: proxy-headers-forwarded
+    #   value: "xforwarded"
+
+  # Probe configuration (operator will configure container probes to call management endpoint /health/* on port 9000)
+  readinessProbe:
+    # How often kubelet will check readiness
+    periodSeconds: 10
+    # How many failures before marking NotReady
+    failureThreshold: 3
+    # (other fields like initialDelaySeconds/timeoutSeconds are operator defaults; if you want explicit values use unsupported.podTemplate)
+  livenessProbe:
+    periodSeconds: 30
+    failureThreshold: 5
+  startupProbe:
+    periodSeconds: 20
+    failureThreshold: 10
+
+  # Optional: if you need to provide exact httpGet settings (path/port/timeout/initialDelay),
+  # use unsupported.podTemplate to inject explicit container probes.
+  # This is more powerful but considered 'unsupported' by the operator docs.
+  unsupported:
+    podTemplate:
+      spec:
+        containers:
+          - name: keycloak
+            # Replace/add explicit probes (these are the exact values we used in previous patch)
+            readinessProbe:
+              httpGet:
+                path: /health/ready
+                port: 9000
+                scheme: HTTP
+              initialDelaySeconds: 20
+              periodSeconds: 10
+              timeoutSeconds: 5
+              failureThreshold: 3
+              successThreshold: 1
+            livenessProbe:
+              httpGet:
+                path: /health/live
+                port: 9000
+                scheme: HTTP
+              initialDelaySeconds: 60
+              periodSeconds: 30
+              timeoutSeconds: 5
+              failureThreshold: 5
+              successThreshold: 1
+            startupProbe:
+              httpGet:
+                path: /health/ready
+                port: 9000
+                scheme: HTTP
+              initialDelaySeconds: 10
+              periodSeconds: 20
+              timeoutSeconds: 5
+              failureThreshold: 10
+
+  #podDisruptionBudget:
+  #  enabled: false
