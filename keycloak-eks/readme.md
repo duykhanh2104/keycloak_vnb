@@ -62,6 +62,38 @@ kubectl cordon ip-192-168-19-197.ec2.internal <br>
 kubectl drain ip-192-168-19-197.ec2.internal --ignore-daemonsets --delete-emptydir-data --force <br>
 aws ec2 terminate-instances --instance-ids i-08159985cdd0ff274 <br>
 
+#### Self cert to aws acm
+Ref link: https://medium.com/@chamilad/adding-a-self-signed-ssl-certificate-to-aws-acm-88a123a04301 <br>
+
+>openssl genrsa -out my-aws-private.key 2048
+# With SAN (recommended)
+cat > openssl.cnf <<'EOF'
+[ req ]<br>
+default_bits       = 2048 <br>
+prompt             = no<br>
+default_md         = sha256<br>
+req_extensions     = req_ext<br>
+distinguished_name = dn<br>
+
+[ dn ]<br>
+C = VN<br>
+ST = HN<br>
+L = HN<br>
+O = VNB<br>
+CN = auth.keycloak.me <br>
+
+[ req_ext ] <br>
+subjectAltName = @alt_names <br>
+
+[ alt_names ] <br>
+DNS.1 = auth.keycloak.me <br>
+EOF <br>
+
+>openssl req -new -x509 -nodes -sha256 -days 3650 -key my-aws-private.key -out my-aws-public.crt -config openssl.cnf <br>
+>openssl pkcs12 -export -inkey my-aws-private.key -in my-aws-public.crt -out my-aws-public.p12 -name "keycloak" 
+
+>aws acm import-certificate --certificate fileb://my-aws-public.crt --private-key fileb://my-aws-private.key --region us-east-1
+
 
 #### Install EBS CSI Driver
 https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html <br>
