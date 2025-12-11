@@ -66,7 +66,7 @@ aws ec2 terminate-instances --instance-ids i-08159985cdd0ff274 <br>
 Ref link: https://medium.com/@chamilad/adding-a-self-signed-ssl-certificate-to-aws-acm-88a123a04301 <br>
 
 >openssl genrsa -out my-aws-private.key 2048
-# With SAN (recommended)
+##### With SAN (recommended)
 cat > openssl.cnf <<'EOF'
 [ req ]<br>
 default_bits       = 2048 <br>
