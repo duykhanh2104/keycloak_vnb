@@ -9,9 +9,9 @@ spec:
   instances: 1
   db:
     vendor: postgres
-    host: postgres-db
+    host: database-1.c6royoums8vm.us-east-1.rds.amazonaws.com
     port: 5432
-    database: keycloakdb
+    database: keycloakdbrds
     usernameSecret:
       name: keycloak-db-secret
       key: db-username
@@ -22,20 +22,23 @@ spec:
   http:
     httpEnabled: true
     httpPort: 8080
-    #httpsEnabled: false           # disable pod TLS; ALB terminates HTTPS; khong co tham so nay
-    # tlsSecret: keycloak-tls-secret
+    #httpsPort: 8543
+    #tlsSecret: keycloak-tls-secret
 
   proxy:
     headers: xforwarded           # proper proxy headers behind ALB
 
   hostname:
     hostname: auth.keycloak.me
+    #admin: https://auth.keycloak.me/admin
     strict: false
     strictBackchannel: false
 
   additionalOptions:
     - name: spi-hostname-default-ssl-required
       value: "NONE"
+    - name: db-url
+      value: "jdbc:postgresql://database-1.c6royoums8vm.us-east-1.rds.amazonaws.com:5432/keycloakdbrds"
     # remove legacy proxy option:
     # - name: proxy-headers-forwarded
     #   value: "xforwarded"
@@ -53,7 +56,7 @@ spec:
   startupProbe:
     periodSeconds: 20
     failureThreshold: 10
-
+  
   # Optional: if you need to provide exact httpGet settings (path/port/timeout/initialDelay),
   # use unsupported.podTemplate to inject explicit container probes.
   # This is more powerful but considered 'unsupported' by the operator docs.
@@ -93,5 +96,10 @@ spec:
               timeoutSeconds: 5
               failureThreshold: 10
 
+          #env:
+          #  - name: KEYCLOAK_ADMIN
+          #    value: admin
+          #  - name: KEYCLOAK_ADMIN_PASSWORD
+          #    value: admin
   #podDisruptionBudget:
   #  enabled: false
