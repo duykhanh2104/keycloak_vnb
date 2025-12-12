@@ -277,3 +277,25 @@ Apply namespace<br>
 Apply CRD for keycloak<br>
 Apply from 1 - 7 yaml file<br>
 
+
+
+#### Command for debug:
+>kubectl -n keycloak logs deploy/postgres-db -f
+>kubectl get events -A --sort-by=.lastTimestamp
+>kubectl -n keycloak logs keycloak-0 -c keycloak --tail=300 --follow
+
+>kubectl -n keycloak exec -it keycloak-0 -- sh
+
+>kubectl -n keycloak logs keycloak-0 -c keycloak --tail=300 --follow
+
+>kubectl -n keycloak exec -it keycloak-6ddddc65f7-fgbk5 -- /bin/bash
+>kcadm.sh config credentials --server http://localhost:8080 --realm master --user admin --password admin
+
+
+>kubectl -n keycloak exec -it nginx -- /bin/bash
+
+>kubectl config set-context --current --namespace=keycloak
+
+>kubectl -n keycloak logs statefulset/keycloak -f
+
+
