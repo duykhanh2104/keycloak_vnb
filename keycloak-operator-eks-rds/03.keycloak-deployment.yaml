@@ -1,0 +1,112 @@
+apiVersion: k8s.keycloak.org/v2alpha1
+kind: Keycloak
+metadata:
+  name: keycloak
+  namespace: keycloak
+  labels:
+    app: keycloak
+spec:
+  instances: 1
+  db:
+    vendor: mariadb
+    host: database-1.c6royoums8vm.us-east-1.rds.amazonaws.com
+    port: 3306
+    database: keycloakdbrds
+    usernameSecret:
+      name: keycloak-db-secret
+      key: db-username
+    passwordSecret:
+      name: keycloak-db-secret
+      key: db-password
+
+  http:
+    httpEnabled: true
+    httpPort: 8080
+    #httpsPort: 8543
+    #tlsSecret: keycloak-tls-secret
+
+  proxy:
+    headers: xforwarded           # proper proxy headers behind ALB
+
+  hostname:
+    hostname: auth.keycloak.me
+    #admin: https://auth.keycloak.me/admin
+    strict: false
+    strictBackchannel: false
+    #backchannelDynamic: true
+  resources:
+    limits:
+      cpu: 1200m
+      memory: 1024Mi
+    requests:
+      cpu: 1200m
+      memory: 500Mi
+  additionalOptions:
+    - name: spi-hostname-default-ssl-required
+      value: "NONE"
+    - name: db-url
+      value: "jdbc:mariadb://database-1.c6royoums8vm.us-east-1.rds.amazonaws.com:3306/keycloakdbrds"
+    # remove legacy proxy option:
+    # - name: proxy-headers-forwarded
+    #   value: "xforwarded"
+
+  # Probe configuration (operator will configure container probes to call management endpoint /health/* on port 9000)
+  readinessProbe:
+    initialDelaySeconds: 60
+    timeoutSeconds: 5
+    # How often kubelet will check readiness
+    periodSeconds: 10
+    # How many failures before marking NotReady
+    failureThreshold: 3
+    # (other fields like initialDelaySeconds/timeoutSeconds are operator defaults; if you want explicit values use unsupported.podTemplate)
+  livenessProbe:
+    initialDelaySeconds: 120
+    periodSeconds: 30
+    timeoutSeconds: 5
+    failureThreshold: 5
+  startupProbe:
+    initialDelaySeconds: 10
+    periodSeconds: 20
+    timeoutSeconds: 5
+    failureThreshold: 30
+  
+  # Optional: if you need to provide exact httpGet settings (path/port/timeout/initialDelay),
+  # use unsupported.podTemplate to inject explicit container probes.
+  # This is more powerful but considered 'unsupported' by the operator docs.
+  unsupported:
+    podTemplate:
+      spec:
+        containers:
+          - name: keycloak
+            # Replace/add explicit probes (these are the exact values we used in previous patch)
+            readinessProbe:
+              httpGet:
+                path: /health/ready
+                port: 9000
+                scheme: HTTP
+              initialDelaySeconds: 60
+              periodSeconds: 10
+              timeoutSeconds: 5
+              failureThreshold: 6
+              successThreshold: 1
+            livenessProbe:
+              httpGet:
+                path: /health/live
+                port: 9000
+                scheme: HTTP
+              initialDelaySeconds: 120
+              periodSeconds: 30
+              timeoutSeconds: 5
+              failureThreshold: 6
+              successThreshold: 1
+            startupProbe:
+              httpGet:
+                path: /health/ready
+                port: 9000
+                scheme: HTTP
+              initialDelaySeconds: 10
+              periodSeconds: 20
+              timeoutSeconds: 5
+              failureThreshold: 30            
+  #podDisruptionBudget:
+  #  enabled: false
