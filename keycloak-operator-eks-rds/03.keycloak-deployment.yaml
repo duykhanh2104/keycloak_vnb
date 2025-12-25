@@ -9,7 +9,7 @@ spec:
   instances: 1
   db:
     vendor: mariadb
-    host: database-1.c6royoums8vm.us-east-1.rds.amazonaws.com
+    host: [endpoint_rds_address]
     port: 3306
     database: keycloakdbrds
     usernameSecret:
@@ -45,7 +45,7 @@ spec:
     - name: spi-hostname-default-ssl-required
       value: "NONE"
     - name: db-url
-      value: "jdbc:mariadb://database-1.c6royoums8vm.us-east-1.rds.amazonaws.com:3306/keycloakdbrds"
+      value: "jdbc:mariadb://[endpoint_rds_address]:3306/keycloakdbrds"
     # remove legacy proxy option:
     # - name: proxy-headers-forwarded
     #   value: "xforwarded"
