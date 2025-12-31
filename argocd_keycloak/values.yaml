@@ -38,9 +38,10 @@ keycloak:
     #host: database-1.c6royoums8vm.us-east-1.rds.amazonaws.com
     #port: 3306
     vendor: postgres
-    host: postgres-db.keycloak.svc.cluster.local
+    host: postgres-db
+    #host: postgres-db.keycloak.svc.cluster.local
     port: 5432
-    database: keycloakdb
+    database: keycloak
     usernameSecret:
       name: keycloak-db-secret
       key: username
@@ -48,7 +49,7 @@ keycloak:
       name: keycloak-db-secret
       key: password
     #url: "jdbc:mariadb://database-1.c6royoums8vm.us-east-1.rds.amazonaws.com:3306/keycloakdbrds"
-    url: "jdbc:postgresql://postgres-db.keycloak.svc.cluster.local:5432/keycloakdb"
+    #url: "jdbc:postgresql://postgres-db.keycloak.svc.cluster.local:5432/keycloakdb"
     pool:
       enabled: true
       init: 1
@@ -56,7 +57,7 @@ keycloak:
       max: 1
   http:
     httpPort: 8080
-  hostname: auth.keycloak.me
+  hostname: ""
   resources:
     enabled: true
     requests:
