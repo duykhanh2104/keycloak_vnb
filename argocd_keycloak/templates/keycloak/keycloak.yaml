@@ -51,8 +51,8 @@ spec:
   additionalOptions:
     - name: spi-hostname-default-ssl-required
       value: "NONE"
-    - name: db-url
-      value: {{ .Values.keycloak.db.url | quote }}
+    #- name: db-url
+    #  value: {{ .Values.keycloak.db.url | quote }}
 
   {{- with .Values.keycloak.readinessProbe }}
   {{- if .enabled }}
