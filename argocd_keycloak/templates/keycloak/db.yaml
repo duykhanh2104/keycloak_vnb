@@ -40,7 +40,7 @@ spec:
           image: postgres:13
           env:
             - name: POSTGRES_DB
-              value: keycloakdb
+              value: keycloak
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
