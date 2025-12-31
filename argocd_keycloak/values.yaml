@@ -60,11 +60,11 @@ keycloak:
   resources:
     enabled: true
     requests:
-      cpu: 1200m
+      cpu: 500m
       memory: 500Mi
     limits:
-      cpu: 1200m
-      memory: 1024Mi
+      cpu: 500m
+      memory: 500Mi
 
   startupProbe:
     enabled: true
