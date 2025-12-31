@@ -59,7 +59,7 @@ keycloak:
     httpPort: 8080
   hostname: ""
   resources:
-    enabled: true
+    enabled: false
     requests:
       cpu: 500m
       memory: 500Mi
