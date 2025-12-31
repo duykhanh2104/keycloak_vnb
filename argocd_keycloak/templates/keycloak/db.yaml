@@ -5,8 +5,8 @@ metadata:
   namespace: keycloak
 type: Opaque
 stringData:
-  username: keycloak
-  password: password
+  username: postgres
+  password: postgres
 ---
 apiVersion: v1
 kind: Service
