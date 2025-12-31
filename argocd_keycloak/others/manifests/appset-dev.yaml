@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: dev-keycloak-operator-applicationset
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          - appname: keycloak-operator
+            namespace: ec1-keycloak-operator-dev   
+
+  template:
+    metadata:
+      name: '{{appname}}-gitops-dev'
+      namespace: argocd
+      labels:
+        System: KEYCLOAK-OPERATOR
+    spec:
+      destination:
+        namespace: '{{namespace}}'
+        server: https://kubernetes.default.svc
+      project: dev
+      source:
+        repoURL: https://github.com/duykhanh2104/keycloak_vnb.git   # add your repo
+        targetRevision: master                                                     # branch name
+        path: keycloak_helm_test
+        helm:
+          valueFiles:
+            - values.yaml                                                          # values name
