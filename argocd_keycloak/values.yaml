@@ -27,7 +27,7 @@ operator:
 keycloak:
   enabled: true
   namespace: keycloak
-  replicas: 2
+  replicas: 1
 
   #metadata override
   nameOverride: "keycloak"
