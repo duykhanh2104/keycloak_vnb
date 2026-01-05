@@ -1,0 +1,82 @@
+# Default values for Keycloak Operator 
+operator:
+  enabled: true
+  namespace: keycloak  
+  replicas: 1
+  
+  #metadata override
+  nameOverride: "keycloak-operator"
+  fullnameOverride: "keycloak-operator"
+
+  image:
+    repository: quay.io/keycloak/keycloak-operator
+    tag: "26.4.5"
+    pullPolicy: IfNotPresent
+
+  keycloakImage: quay.io/keycloak/keycloak:26.4.5 
+
+  resources:
+    requests:
+      cpu: 300m
+      memory: 450Mi
+    limits:
+      cpu: 700m
+      memory: 450Mi
+
+# Default values for Keycloak deployments
+keycloak:
+  enabled: true
+  namespace: keycloak
+  replicas: 2
+
+  #metadata override
+  nameOverride: "keycloak"
+  fullnameOverride: "keycloak"
+
+  db:
+    vendor: mariadb
+    host: database-1.c6royoums8vm.us-east-1.rds.amazonaws.com
+    port: 3306
+    database: keycloakdbrds
+    usernameSecret:
+      name: keycloak-db-secret
+      key: db-username
+    passwordSecret:
+      name: keycloak-db-secret
+      key: db-password
+    url: "jdbc:mariadb://database-1.c6royoums8vm.us-east-1.rds.amazonaws.com:3306/keycloakdbrds"
+    pool:
+      enabled: true
+      init: 1
+      min: 5
+      max: 10
+  http:
+    httpPort: 8080
+  hostname: auth.keycloak.me
+  resources:
+    enabled: true
+    requests:
+      cpu: 1200m
+      memory: 500Mi
+    limits:
+      cpu: 1200m
+      memory: 1024Mi
+
+  startupProbe:
+    enabled: true
+    initialDelaySeconds: 60
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 30
+  readinessProbe:
+    enabled: true
+    initialDelaySeconds: 30
+    timeoutSeconds: 5
+    periodSeconds: 10
+    failureThreshold: 3
+  livenessProbe:
+    enabled: true
+    initialDelaySeconds: 120
+    periodSeconds: 30
+    timeoutSeconds: 5
+    failureThreshold: 5   
