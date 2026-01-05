@@ -4,7 +4,7 @@ kind: Service
 metadata:  
   labels:
     app.kubernetes.io/name: {{ .Values.operator.nameOverride | default "keycloak-operator" }}
-    app.kubernetes.io/version: {{ .Chart.appVersion }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
     app.kubernetes.io/managed-by: quarkus
   name: svc-{{ .Values.metaname }}
   namespace: {{ .Values.operator.namespace }}
