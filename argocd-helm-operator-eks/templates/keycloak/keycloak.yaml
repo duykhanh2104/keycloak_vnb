@@ -21,9 +21,9 @@ spec:
       key: {{ .Values.keycloak.db.passwordSecret.key | quote }}
     {{- with .Values.keycloak.db.pool }}
     {{- if .enabled }}
-    poolInitialSize: {{ .Values.keycloak.db.pool.initial| default 1 }}
-    poolMinSize: {{ .Values.keycloak.db.pool.min| default 2 }}
-    poolMaxSize: {{ .Values.keycloak.db.pool.max| default 3 }}
+    poolInitialSize: {{ .initial | default 1 }}
+    poolMinSize: {{ .min | default 2 }}
+    poolMaxSize: {{ .max | default 3 }}
     {{- end }}
     {{- end }}
   http:
