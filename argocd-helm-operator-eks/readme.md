@@ -12,7 +12,7 @@ metadata:
 type: Opaque
 stringData:
   db-username: admin
-  db-password: admin123
+  db-password: admin***
   db-name: keycloakdbrds
 ```
 - Modify values files: Keycloak Opreate + Keycloak Deployment
