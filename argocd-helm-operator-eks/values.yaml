@@ -1,4 +1,8 @@
 # Default values for Keycloak Operator 
+domain: "auth.keycloak.me"
+namespace: "keycloak"
+metaname: "keycloak-operator"
+
 operator:
   enabled: true
   namespace: keycloak  
@@ -80,3 +84,22 @@ keycloak:
     periodSeconds: 30
     timeoutSeconds: 5
     failureThreshold: 5   
+
+# Default values for ALB Ingress
+extingress:
+  enabled: true
+  classname: alb
+  hostname: auth.keycloak.me
+  port: 8080  
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+
+    # alb terminate TLS on port 443 and forward http to backend 8080
+    #alb.ingress.kubernetes.io/backend-protocol: "HTTP"
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/healthcheck-path: /health/ready
+    alb.ingress.kubernetes.io/healthcheck-port: "9000"
+    alb.ingress.kubernetes.io/success-codes: "200"
+    alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:us-east-1:376129838666:certificate/250d29cf-179b-46e5-901f-bfd4461e9c7a"
