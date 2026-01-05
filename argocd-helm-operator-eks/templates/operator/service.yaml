@@ -6,7 +6,8 @@ metadata:
     app.kubernetes.io/name: {{ .Values.operator.nameOverride | default "keycloak-operator" }}
     app.kubernetes.io/version: {{ .Chart.appVersion }}
     app.kubernetes.io/managed-by: quarkus
-  name: {{ .Values.operator.fullnameOverride | default "keycloak-operator" }}
+  name: svc-{{ .Values.metaname }}
+  namespace: {{ .Values.operator.namespace }}
 
 spec:
   type: ClusterIP
