@@ -16,12 +16,37 @@ stringData:
   db-name: keycloakdbrds
 ```
 - Modify values files: Keycloak Opreate + Keycloak Deployment
+> Keycloak Operator:
 ```
 + keycloakImage
++ replicas
 + resources
-+ db: vendor, url
-```
 
+```
+> Keycloak Deployment:
+```
++ replicas
++ resources, startupProbe
++ db: vendor, url, pool
+db:
+    vendor: mariadb
+    host: database-1.c6royoums8vm.us-east-1.rds.amazonaws.com
+    port: 3306
+    database: keycloakdbrds
+    usernameSecret:
+      name: keycloak-db-secret
+      key: db-username
+    passwordSecret:
+      name: keycloak-db-secret
+      key: db-password
+    url: "jdbc:mariadb://database-1.c6royoums8vm.us-east-1.rds.amazonaws.com:3306/keycloakdbrds"
+    pool:
+      enabled: true
+      init: 1
+      min: 5
+      max: 10
+
+```
 ### Run argocd: 2 options to execute
 > Command line:
 ```
