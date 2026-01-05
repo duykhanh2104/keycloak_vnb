@@ -11,8 +11,8 @@ metadata:
   namespace: keycloak
 type: Opaque
 stringData:
-  db-username: postgres
-  db-password: postgres
+  db-username: admin
+  db-password: admin123
   db-name: keycloakdbrds
 ```
 - Modify values files: Keycloak Opreate + Keycloak Deployment
