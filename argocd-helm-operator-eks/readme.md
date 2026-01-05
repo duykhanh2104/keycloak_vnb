@@ -1,7 +1,7 @@
 This is for testing deployment to argocd with Operator helm on EKS <br/>
 
 ### Prerequisite:
-- Create namespace
+- Create namespace: keycloak
 - Create Secret:
 ```
 apiVersion: v1
