@@ -1,0 +1,27 @@
+{{- if .Values.realmImport.enabled }}
+apiVersion: k8s.keycloak.org/v2alpha1
+kind: KeycloakRealmImport
+metadata:
+  name: {{ .Values.realmImport.name }}
+  namespace: {{ .Values.realmImport.namespace }}
+spec:
+  keycloakCRName: {{ .Values.realmImport.keycloakCRName }}
+  realm:
+    realm: {{ .Values.realmImport.realm }}
+    enabled: {{ .Values.realmImport.enabledFlag   }}
+
+    clients:
+      {{- toYaml .Values.realmImport.clients | nindent 6 }}
+
+    roles:
+      realm:
+        {{- toYaml .Values.realmImport.roles.realm | nindent 8 }}
+      client:
+        {{- toYaml .Values.realmImport.roles.client | nindent 8 }}
+
+    groups:
+      {{- toYaml .Values.realmImport.groups | nindent 6 }}
+
+    users:
+      {{- toYaml .Values.realmImport.users | nindent 6 }}
+{{- end }}
