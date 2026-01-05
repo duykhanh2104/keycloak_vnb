@@ -36,8 +36,7 @@ spec:
   hostname:
     hostname: {{ .Values.keycloak.hostname | quote }}    
     strict: false
-    strictBackchannel: false
-    #backchannelDynamic: {{ .Values.keycloak.hostname.backchannelDynamic }}
+    strictBackchannel: false    
   {{- with .Values.keycloak.resources }}
   {{- if .enabled }}
   resources:
