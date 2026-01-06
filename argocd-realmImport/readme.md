@@ -105,5 +105,5 @@ realmImport:
 **NOTES**: Should **restart Pod Keycloak** to shown data in UI:
 <img width="1703" height="843" alt="image" src="https://github.com/user-attachments/assets/ff6a885a-475e-4728-b5b3-48c8eb662c74" />
 
-  #### Option 2: using manifest:
-  
+  #### Option 2: using manifest: review param before run
+  kubectl apply -f ./others/manifest/appset.yaml
