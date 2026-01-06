@@ -1,0 +1,87 @@
+{{- if .Values.keycloak.enabled }}
+apiVersion: k8s.keycloak.org/v2alpha1
+kind: Keycloak
+metadata:
+  name: {{ .Values.keycloak.nameOverride | default "keycloak" }}
+  namespace: {{ .Values.keycloak.namespace | default "keycloak" }}
+  labels:
+    app: {{ .Values.keycloak.nameOverride | default "keycloak" }}
+spec:
+  ingress:
+    enabled: false
+  instances: {{ .Values.keycloak.replicas | default 1 }}
+  db:
+    vendor: {{ .Values.keycloak.db.vendor | quote }}
+    host: {{ .Values.keycloak.db.host | quote }}
+    port: {{ .Values.keycloak.db.port }}
+    database: {{ .Values.keycloak.db.database | quote }}
+    usernameSecret:
+      name: {{ .Values.keycloak.db.usernameSecret.name | quote }}
+      key: {{ .Values.keycloak.db.usernameSecret.key | quote }}
+    passwordSecret:
+      name: {{ .Values.keycloak.db.passwordSecret.name | quote }}
+      key: {{ .Values.keycloak.db.passwordSecret.key | quote }}
+    {{- with .Values.keycloak.db.pool }}
+    {{- if .enabled }}
+    poolInitialSize: {{ .initial | default 1 }}
+    poolMinSize: {{ .min | default 2 }}
+    poolMaxSize: {{ .max | default 3 }}
+    {{- end }}
+    {{- end }}
+  http:
+    httpEnabled: true
+    httpPort: {{ .Values.keycloak.http.httpPort | default 8080 }}
+    #httpsPort: {{ .Values.keycloak.http.httpsPort | default 8443}}
+    #tlsSecret: {{ .Values.keycloak.http.tlsSecret }}
+  proxy:
+    headers: xforwarded
+  hostname:
+    hostname: {{ .Values.keycloak.hostname | quote }}    
+    strict: false
+    strictBackchannel: false    
+  {{- with .Values.keycloak.resources }}
+  {{- if .enabled }}
+  resources:
+    limits:
+      cpu: {{ .limits.cpu | quote }}
+      memory: {{ .limits.memory | quote }}
+    requests:
+      cpu: {{ .requests.cpu | quote }}
+      memory: {{ .requests.memory | quote }} 
+  {{- end }}
+  {{- end }}
+  additionalOptions:
+    - name: spi-hostname-default-ssl-required
+      value: "NONE"
+    - name: db-url
+      value: {{ .Values.keycloak.db.url | quote }}
+
+  {{- with .Values.keycloak.readinessProbe }}
+  {{- if .enabled }}
+  readinessProbe:
+    initialDelaySeconds: {{ .initialDelaySeconds | default 60 }}
+    timeoutSeconds: {{ .timeoutSeconds | default 5 }}
+    periodSeconds: {{ .periodSeconds | default 10 }}
+    failureThreshold: {{ .failureThreshold | default 5 }}
+  {{- end }}
+  {{- end }}
+  {{- with .Values.keycloak.livenessProbe }}
+  {{- if .enabled }}
+  livenessProbe:
+    initialDelaySeconds: {{ .initialDelaySeconds | default 120 }}
+    periodSeconds: {{ .periodSeconds | default 30 }}
+    timeoutSeconds: {{ .timeoutSeconds | default 5 }}
+    failureThreshold: {{ .failureThreshold | default 5 }}
+  {{- end }}
+  {{- end }}
+  {{- with .Values.keycloak.startupProbe }}
+  {{- if .enabled }}
+  startupProbe:
+    initialDelaySeconds: {{ .initialDelaySeconds | default 30 }}
+    periodSeconds: {{ .periodSeconds | default 10 }}
+    timeoutSeconds: {{ .timeoutSeconds | default 5 }}
+    failureThreshold: {{ .failureThreshold | default 30 }}
+  {{- end }}
+  {{- end }}
+  
+{{- end }}
