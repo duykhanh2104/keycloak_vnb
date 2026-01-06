@@ -3,7 +3,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ing-alb-ext-{{ .Values.metaname }}
+  name: ing-alb-ext-{{ .Values.keycloak.metaname }}
   namespace: {{ .Values.namespace }}
   annotations:
   {{- with .Values.extingress.annotations }}
@@ -20,7 +20,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: svc-{{ .Values.metaname }}
+                name: svc-{{ .Values.keycloak.metaname }}
                 port:
                   number: {{ $port }}
 {{- end }}
