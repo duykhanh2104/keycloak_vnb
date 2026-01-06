@@ -32,6 +32,7 @@ keycloak:
   enabled: true
   namespace: keycloak
   replicas: 2
+  metaname: "keycloak-deployment"
 
   #metadata override
   nameOverride: "keycloak"
@@ -90,7 +91,7 @@ extingress:
   enabled: true
   classname: alb
   hostname: auth.keycloak.me
-  port: 80
+  port: 8080  
   annotations:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
