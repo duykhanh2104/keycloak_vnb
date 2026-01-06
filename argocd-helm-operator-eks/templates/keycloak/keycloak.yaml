@@ -9,7 +9,7 @@ metadata:
 spec:
   http:
     ingress:
-      enabled:: false
+      enabled: false
   instances: {{ .Values.keycloak.replicas | default 1 }}
   db:
     vendor: {{ .Values.keycloak.db.vendor | quote }}
