@@ -1,6 +1,51 @@
 This is for testing deployment to argocd with Operator helm on EKS <br/>
 
 ### 1. Prerequisite:
+- Create self cert for domain: auth.keycloak.me with openssl:
+```
+openssl genrsa -out my-aws-private.key 2048
+# With SAN (recommended)
+cat > openssl.cnf <<'EOF'
+[ req ]
+default_bits       = 2048
+prompt             = no
+default_md         = sha256
+req_extensions     = req_ext
+distinguished_name = dn
+
+[ dn ]
+C = VN
+ST = HN
+L = HN
+O = VNB
+CN = auth.keycloak.me
+
+[ req_ext ]
+subjectAltName = @alt_names
+
+[ alt_names ]
+DNS.1 = auth.keycloak.me
+EOF
+
+openssl req -new -x509 -nodes -sha256 -days 3650 \
+  -key my-aws-private.key \
+  -out my-aws-public.crt \
+  -config openssl.cnf
+
+openssl pkcs12 -export \
+  -inkey my-aws-private.key \
+  -in my-aws-public.crt \
+  -out my-aws-public.p12 \
+  -name "keycloak"
+```
+- Import cert to AWS ACM to use for offload cert on ALB later:
+```
+aws acm import-certificate \
+  --certificate fileb://my-aws-public.crt \
+  --private-key fileb://my-aws-private.key \
+  --region us-east-1
+
+```
 - Create AWS RDS, get endpoint to update to db-url on values.yaml files. After create RDS mariadb, you should run mysql command to create DB instances with name: keycloakdbrds.
 - Create namespace: keycloak
 - Create Secret and apply it to namespace keycloak or use another way to mount secret for db
@@ -16,15 +61,15 @@ stringData:
   db-password: admin***
   db-name: keycloakdbrds
 ```
-- Modify values files: Keycloak Opreate + Keycloak Deployment if needed
-> Keycloak Operator:
+### 2. Modify values files: Keycloak Opreate + Keycloak Deployment if needed
+> 2.1. Keycloak Operator:
 ```
 + keycloakImage
 + replicas
 + resources
 
 ```
-> Keycloak Deployment:
+> 2.2. Keycloak Deployment:
 ```
 + replicas
 + resources, startupProbe
@@ -48,8 +93,8 @@ db:
       max: 10
 
 ```
-### 2. Run argocd: 2 options to execute
-> Command line:
+### 3. Run argocd: 2 options to execute
+> Option 1: using Command line:
 ```
 argocd app create keycloak \
   --repo https://github.com/duykhanh2104/keycloak_vnb.git \
@@ -61,7 +106,7 @@ argocd app create keycloak \
   --grpc-web
 ```
 
-> Run manifest:
+> Option 2: Run manifest: review params before run:
 ```
 kubectl apply -n argocd -f "./others/manifests/appset-dev.yaml"
 
@@ -78,85 +123,3 @@ helm lint
 # to render helm template
 helm template ./
 ```
-
-### Optional: 
-- To import manual users to KC, you can modify values-realmImport.yaml to add users for the first time only. Because users, role, policy bind to Realm, if Realm name exists, it can't to import. Then execute values-realmImport to add users to db. 
-```
-# Replace name realm
-realmImport:
-  enabled: false
-  name: demo-realm
-  namespace: keycloak
-  keycloakCRName: keycloak
-  realm: demo1
-  enabledFlag: true
-
-  clients:
-    - clientId: myclient
-      enabled: true
-      protocol: openid-connect
-      publicClient: true
-      directAccessGrantsEnabled: true
-
-  roles:
-    realm:
-      - name: APP_ADMIN
-      - name: APP_USER
-    client:
-      myclient:
-        - name: admin
-        - name: user
-
-  groups:
-    - name: AAD
-      clientRoles:
-        myclient:
-          - user
-    - name: AAA
-      clientRoles:
-        myclient:
-          - admin
-
-  users:
-    - username: user1
-      enabled: true
-      credentials:
-        - type: password
-          value: secret
-          temporary: false
-      groups:
-        - AAD
-    - username: user2
-      enabled: true
-      credentials:
-        - type: password
-          value: secret
-          temporary: false
-      groups:
-        - AAD
-    - username: user3
-      enabled: true
-      credentials:
-        - type: password
-          value: secret
-          temporary: false
-      groups:
-        - AAD
-    - username: admin5
-      enabled: true
-      credentials:
-        - type: password
-          value: secret
-          temporary: false
-      groups:
-        - AAA
-    - username: admin6
-      enabled: true
-      credentials:
-        - type: password
-          value: secret
-          temporary: false
-      groups:
-        - AAA
-```
-  
