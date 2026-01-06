@@ -7,24 +7,30 @@ spec:
   generators:
     - list:
         elements:
-          - appname: keycloak-operator
-            namespace: ec2-keycloak-operator-dev   
+          - appname: keycloak-operator-eks
+            namespace: keycloak
 
   template:
     metadata:
       name: '{{appname}}-gitops-dev'
-      namespace: argocd
       labels:
         System: KEYCLOAK-OPERATOR
     spec:
+      project: default
       destination:
         namespace: '{{namespace}}'
-        server: https://kubernetes.default.svc
-      project: dev   # check project name in argocd
+       # server: https://kubernetes.default.svc
+        server: https://1A1BE5EB269CCA0C00A4ACE5B454408F.gr7.us-east-1.eks.amazonaws.com
       source:
         repoURL: https://github.com/duykhanh2104/keycloak_vnb.git   # add your repo
-        targetRevision: master                                                     # branch name
-        path: keycloak_helm_test
+        targetRevision: main                                                   # branch name
+        path: argocd-helm-operator-eks
         helm:
           valueFiles:
             - values.yaml                                                          # values name
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
