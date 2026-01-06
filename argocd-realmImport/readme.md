@@ -2,8 +2,9 @@
 - Use only for import realm 1st time
 - Use to manual add users via manifest yaml files (on dev)
 
-### Optional: 
-- To import manual users to KC, you can modify values.yaml to add users for the first time only. Because users, role, policy bind to Realm, if Realm name exists, it can't to import. Then execute values-realmImport to add users to db. 
+### Add users/role/groups to values.yaml: 
+- To import manual users to KC, you can modify values.yaml to add users for the first time only. Because users, role, policy bind to Realm, if Realm name exists, it can't to import.
+
 ```
 # Replace name realm
 realmImport:
@@ -82,3 +83,19 @@ realmImport:
       groups:
         - AAA
 ```
+
+### deploy to argocd
+#### Option 1: using cmd:
+```
+  argocd app create keycloak-realm-import \
+  --repo https://github.com/duykhanh2104/keycloak_vnb.git \
+  --path argocd-realmImport \
+  --dest-server https://1A1BE5EB269CCA0C00A4ACE5B454408F.gr7.us-east-1.eks.amazonaws.com \
+  --dest-namespace keycloak \
+  --values values.yaml
+```
+- Click sync to deploy:
+  <img width="986" height="443" alt="image" src="https://github.com/user-attachments/assets/e374b2f3-83ca-4bcf-a275-1c13dd71a083" />
+
+  #### Option 2: using manifest:
+  
