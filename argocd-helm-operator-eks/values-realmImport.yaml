@@ -1,5 +1,5 @@
 realmImport:
-  enabled: false
+  enabled: true
   name: demo-realm
   namespace: keycloak
   keycloakCRName: keycloak
