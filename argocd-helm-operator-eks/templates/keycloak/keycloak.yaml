@@ -83,51 +83,5 @@ spec:
     failureThreshold: {{ .failureThreshold | default 30 }}
   {{- end }}
   {{- end }}
-  unsupported:
-    podTemplate:
-      spec:
-        containers:
-          - name: keycloak
-            {{- with .Values.keycloak.readinessProbe }}
-            {{- if .enabled }}
-            readinessProbe:
-              httpGet:
-                path: /health/ready
-                port: 9000
-                scheme: HTTP
-              initialDelaySeconds: {{ .initialDelaySeconds | default 60 }}
-              periodSeconds: {{ .periodSeconds | default 10 }}
-              timeoutSeconds: {{ .timeoutSeconds | default 5 }}
-              failureThreshold: {{ .failureThreshold | default 5 }}
-              successThreshold: {{ .successThreshold | default 1 }}
-            {{- end }}
-            {{- end }}
-            {{- with .Values.keycloak.livenessProbe }}
-            {{- if .enabled }}
-            livenessProbe:
-              httpGet:
-                path: /health/live
-                port: 9000
-                scheme: HTTP
-              initialDelaySeconds: {{ .initialDelaySeconds | default 120 }}
-              periodSeconds: {{ .periodSeconds | default 30 }}
-              timeoutSeconds: {{ .timeoutSeconds | default 5 }}
-              failureThreshold: {{ .failureThreshold | default 5 }}
-              successThreshold: {{ .successThreshold | default 1 }}
-            {{- end }}
-            {{- end }}
-            {{- with .Values.keycloak.startupProbe }}
-            {{- if .enabled }}
-            startupProbe:
-              httpGet:
-                path: /health/ready
-                port: 9000
-                scheme: HTTP
-              initialDelaySeconds: {{ .initialDelaySeconds | default 10 }}
-              periodSeconds: {{ .periodSeconds | default 20 }}
-              timeoutSeconds: {{ .timeoutSeconds | default 5 }}
-              failureThreshold: {{ .failureThreshold | default 30 }}
-              successThreshold: {{ .successThreshold | default 1 }}
-            {{- end }}
-            {{- end }} 
+  
 {{- end }}
