@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: dev-keycloak-realm-import-applicationset
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          - appname: keycloak-realm-import
+            namespace: keycloak
+
+  template:
+    metadata:
+      name: '{{appname}}-gitops-dev'
+      labels:
+        System: KEYCLOAK
+        Component: REALM-IMPORT
+
+    spec:
+      project: default
+
+      destination:
+        server: https://1A1BE5EB269CCA0C00A4ACE5B454408F.gr7.us-east-1.eks.amazonaws.com
+        namespace: '{{namespace}}'
+
+      source:
+        repoURL: https://github.com/duykhanh2104/keycloak_vnb.git
+        targetRevision: main
+        path: argocd-realmImport
+        helm:
+          valueFiles:
+            - values.yaml
+
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
