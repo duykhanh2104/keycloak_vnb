@@ -123,3 +123,12 @@ helm lint
 # to render helm template
 helm template ./
 ```
+
+### Capture screen:
+<img width="1472" height="1252" alt="image" src="https://github.com/user-attachments/assets/692eb0d4-bdbc-483c-b15a-ea4bc643c29c" />
+<img width="1471" height="654" alt="image" src="https://github.com/user-attachments/assets/2f87ea40-eed1-494f-9723-775caa4da5cc" />
+<img width="1464" height="657" alt="image" src="https://github.com/user-attachments/assets/9c29e48b-9b50-45cc-9cf4-94616afebf0d" />
+<img width="1467" height="1027" alt="image" src="https://github.com/user-attachments/assets/60d610a6-abb6-4c0a-ba22-e40f4d214302" />
+
+
+
