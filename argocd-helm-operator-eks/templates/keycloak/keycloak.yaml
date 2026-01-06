@@ -23,9 +23,9 @@ spec:
       key: {{ .Values.keycloak.db.passwordSecret.key | quote }}
     {{- with .Values.keycloak.db.pool }}
     {{- if .enabled }}
-    poolInitialSize: {{ .initial | default 1 }}
-    poolMinSize: {{ .min | default 2 }}
-    poolMaxSize: {{ .max | default 3 }}
+    poolInitialSize: {{ .init | default 1 }}
+    poolMinSize: {{ .min | default 5 }}
+    poolMaxSize: {{ .max | default 10 }}
     {{- end }}
     {{- end }}
   http:
@@ -56,15 +56,26 @@ spec:
     - name: db-url
       value: {{ .Values.keycloak.db.url | quote }}
 
+  {{- with .Values.keycloak.startupProbe }}
+  {{- if .enabled }}
+  startupProbe:
+    initialDelaySeconds: {{ .initialDelaySeconds | default 60 }}
+    periodSeconds: {{ .periodSeconds | default 10 }}
+    timeoutSeconds: {{ .timeoutSeconds | default 5 }}
+    failureThreshold: {{ .failureThreshold | default 30 }}
+  {{- end }}
+  {{- end }}
+  
   {{- with .Values.keycloak.readinessProbe }}
   {{- if .enabled }}
   readinessProbe:
-    initialDelaySeconds: {{ .initialDelaySeconds | default 60 }}
-    timeoutSeconds: {{ .timeoutSeconds | default 5 }}
+    initialDelaySeconds: {{ .initialDelaySeconds | default 30 }}
     periodSeconds: {{ .periodSeconds | default 10 }}
-    failureThreshold: {{ .failureThreshold | default 5 }}
+    timeoutSeconds: {{ .timeoutSeconds | default 5 }}
+    failureThreshold: {{ .failureThreshold | default 3 }}
   {{- end }}
   {{- end }}
+  
   {{- with .Values.keycloak.livenessProbe }}
   {{- if .enabled }}
   livenessProbe:
@@ -72,15 +83,6 @@ spec:
     periodSeconds: {{ .periodSeconds | default 30 }}
     timeoutSeconds: {{ .timeoutSeconds | default 5 }}
     failureThreshold: {{ .failureThreshold | default 5 }}
-  {{- end }}
-  {{- end }}
-  {{- with .Values.keycloak.startupProbe }}
-  {{- if .enabled }}
-  startupProbe:
-    initialDelaySeconds: {{ .initialDelaySeconds | default 30 }}
-    periodSeconds: {{ .periodSeconds | default 10 }}
-    timeoutSeconds: {{ .timeoutSeconds | default 5 }}
-    failureThreshold: {{ .failureThreshold | default 30 }}
   {{- end }}
   {{- end }}
   
