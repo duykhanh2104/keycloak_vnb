@@ -1,8 +1,9 @@
 This is for testing deployment to argocd with Operator helm on EKS <br/>
 
-### Prerequisite:
+### 1. Prerequisite:
+- Create AWS RDS, get endpoint to update to db-url on values.yaml files. After create RDS mariadb, you should run mysql command to create DB instances with name: keycloakdbrds.
 - Create namespace: keycloak
-- Create Secret:
+- Create Secret and apply it to namespace keycloak or use another way to mount secret for db
 ```
 apiVersion: v1
 kind: Secret
@@ -15,7 +16,7 @@ stringData:
   db-password: admin***
   db-name: keycloakdbrds
 ```
-- Modify values files: Keycloak Opreate + Keycloak Deployment
+- Modify values files: Keycloak Opreate + Keycloak Deployment if needed
 > Keycloak Operator:
 ```
 + keycloakImage
@@ -30,7 +31,7 @@ stringData:
 + db: vendor, url, pool
 db:
     vendor: mariadb
-    host: database-1.c6royoums8vm.us-east-1.rds.amazonaws.com
+    host: database-1.c6royoums8vm.us-east-1.rds.amazonaws.com              # Get endpoint from AWS RDS mariadb
     port: 3306
     database: keycloakdbrds
     usernameSecret:
@@ -47,7 +48,7 @@ db:
       max: 10
 
 ```
-### Run argocd: 2 options to execute
+### 2. Run argocd: 2 options to execute
 > Command line:
 ```
 argocd app create keycloak \
