@@ -20,7 +20,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: svc-{{ .Values.keycloak.metaname }}
+                name: keycloak-service
                 port:
                   number: {{ $port }}
 {{- end }}
