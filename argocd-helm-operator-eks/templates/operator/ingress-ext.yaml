@@ -1,0 +1,26 @@
+{{- if .Values.extingress.enabled }}
+{{- $port := .Values.extingress.port | default 8080 }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ing-alb-ext-{{ .Values.metaname }}
+  namespace: {{ .Values.namespace }}
+  annotations:
+  {{- with .Values.extingress.annotations }}
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+    
+spec:
+  ingressClassName: {{ .Values.extingress.classname }}
+  rules:
+    - host: {{ .Values.domain }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-{{ .Values.metaname }}
+                port:
+                  number: {{ $port }}
+{{- end }}
